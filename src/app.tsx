@@ -1,9 +1,16 @@
 import React from 'react';
-
-const MyClass: React.FC = () => {
+import ReactDOM from 'react-dom/client';
+const MyComponent = () => {
   return (
     <h1>this is coming soon</h1>
   );
 };
-
-export default MyClass;
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <MyComponent />
+    </React.StrictMode>
+  );
+}
