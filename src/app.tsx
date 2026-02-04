@@ -1,9 +1,9 @@
-var MyClass = React.createClass({
-  render: function() {
-    return (
+import React from 'react';
 
-      <h1>this is coming soon
-      </h1>
-    );
-  }
-});
+const MyClass: React.FC = () => {
+  return (
+    <h1>this is coming soon</h1>
+  );
+};
+
+export default MyClass;
