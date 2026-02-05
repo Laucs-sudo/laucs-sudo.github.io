@@ -122,7 +122,7 @@ export function App() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    I build games. I build web systems.
+                    I build websites  and possibly c++
                   </AccordionContent>
                 </AccordionItem>
 
@@ -134,7 +134,7 @@ export function App() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    I handle the programming. Design, logic, architecture. All the technical work.
+                    
                   </AccordionContent>
                 </AccordionItem>
 
@@ -146,7 +146,7 @@ export function App() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    Working on games independently. Building systems and tools. Preparing for the company launch.
+                    back in 2020 i was  using html css js then in 2025 i used react this my first time i used react 
                   </AccordionContent>
                 </AccordionItem>
 
@@ -158,7 +158,7 @@ export function App() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    Launching a game company in 2026. The goal is to ship original titles and grow from there.
+                    Launching a UGC game company in 2026. .
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
