@@ -134,7 +134,7 @@ export function App() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    
+                   “My experience with building websites is limited but this is my website i made
                   </AccordionContent>
                 </AccordionItem>
 
@@ -159,6 +159,17 @@ export function App() {
                   </AccordionTrigger>
                   <AccordionContent>
                     Launching a UGC game company in 2026. .
+                  </AccordionContent>
+                </AccordionItem>
+                               <AccordionItem value="Is Neocites website gotta be removed">
+                  <AccordionTrigger>
+                    <div className="flex items-center gap-3">
+                      <Clock className="w-4 h-4 text-white" />
+                      <span className="font-medium">is Neocites web removed?</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    no you would be redirected here because the old website had only html css js  so i redirected you here
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
