@@ -24,7 +24,7 @@ className="relative h-screen bg-black text-white font-sans overflow-y-auto overf
 <motion.div
 className="fixed inset-0 bg-cover bg-center pointer-events-none will-change-transform"
 style={{
-backgroundImage: url(${PROFILE_IMAGE}),
+backgroundImage: `url(${PROFILE_IMAGE})`,
 opacity: bgOpacity,
 y: bgY,
 scale: bgScale
