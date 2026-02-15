@@ -22,41 +22,53 @@ jobs:
         shell: bash
 
     steps:
-      # 1. Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Set up Node.js with caching for npm
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      # 3. Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci --prefer-offline --no-audit --no-fund
 
-      # 4. Run ESLint to check code quality and optionally auto-fix
-      - name: Lint and auto-fix code
+      - name: Auto-fix lint issues
         run: |
-          npm install eslint --save-dev
-          npx eslint src --fix || echo "Linting completed with fixes"
+          set -euo pipefail
+          npm run lint:fix
 
-      # 5. Run tests
+      - name: Check lint errors
+        run: |
+          set -euo pipefail
+          npm run lint:check
+
       - name: Run tests
-        run: |
-          npm test || echo "Some tests failed but continuing deployment"
+        env:
+          CI: true
+        run: npm test -- --watchAll=false --runInBand
 
-      # 6. Build the React app
       - name: Build the app
         run: npm run build
 
-      # 7. Upload build artifact for deployment
+      - id: detect_build
+        name: Detect build output directory
+        run: |
+          set -euo pipefail
+          if [ -d "./dist" ]; then
+            echo "build_dir=dist" >> $GITHUB_OUTPUT
+          elif [ -d "./build" ]; then
+            echo "build_dir=build" >> $GITHUB_OUTPUT
+          else
+            echo "::error file=./,title=build output missing::expected './dist' or './build' directory not found after build."
+            exit 1
+          fi
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: ${{ steps.detect_build.outputs.build_dir }}
 
   deploy:
     needs: build
@@ -66,7 +78,19 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # Deploy the uploaded artifact to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify deployment
+        run: |
+          set -euo pipefail
+          if [ -z "${{ steps.deployment.outputs.page_url }}" ]; then
+            echo "::error title=deployment failed::No page_url output from deploy action"
+            exit 1
+          fi
+          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
+
+      - name: Notify deployment success
+        if: ${{ success() }}
+        run: echo "Deployment complete: ${{ steps.deployment.outputs.page_url }}"
