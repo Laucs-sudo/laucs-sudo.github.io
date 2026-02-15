@@ -1,5 +1,4 @@
 name: Deploy React App to Pages
-
 on:
   push:
     branches: ["main"]
@@ -11,8 +10,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -20,7 +19,6 @@ jobs:
     defaults:
       run:
         shell: bash
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -52,8 +50,8 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - id: detect_build
-        name: Detect build output directory
+      - name: Detect build output directory
+        id: detect_build
         run: |
           set -euo pipefail
           if [ -d "./dist" ]; then
@@ -61,7 +59,7 @@ jobs:
           elif [ -d "./build" ]; then
             echo "build_dir=build" >> $GITHUB_OUTPUT
           else
-            echo "::error file=./,title=build output missing::expected './dist' or './build' directory not found after build."
+            echo "::error title=Build output missing::Expected './dist' or './build' directory not found after build."
             exit 1
           fi
 
@@ -76,7 +74,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
@@ -86,11 +83,11 @@ jobs:
         run: |
           set -euo pipefail
           if [ -z "${{ steps.deployment.outputs.page_url }}" ]; then
-            echo "::error title=deployment failed::No page_url output from deploy action"
+            echo "::error title=Deployment failed::No page_url output from deploy action"
             exit 1
           fi
           echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
 
       - name: Notify deployment success
-        if: ${{ success() }}
+        if: success()
         run: echo "Deployment complete: ${{ steps.deployment.outputs.page_url }}"
