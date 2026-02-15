@@ -87,7 +87,3 @@ jobs:
             exit 1
           fi
           echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
-
-      - name: Notify deployment success
-        if: success()
-        run: echo "Deployment complete: ${{ steps.deployment.outputs.page_url }}"
